@@ -1,7 +1,7 @@
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}HospitalApp{% endblock %}
+{% block title %}TMDBBoxOfficeAPP{% endblock %}
 
 {% block navbar %}
 <div class="navbar navbar-inverse" role="navigation">
@@ -37,11 +37,9 @@
 
 <div class='container'>
 
-    <h3>{% if session.get('pred') %} Filminntjeningsprediksjon: {{session.get('pred')['pred']}} days.</h3>
-
-    <h4>Probabilities: {{session.get('pred')['uncertainty']}}
-         {% else %} {% endif %}</h4>
-    <br>
+    <h3>{% if session.get('pred') %} Filminntjeningsprediksjon: $ {{session.get('pred')['pred']}}
+        {% else %} {% endif %}
+    </h3>
     
 
 </div>

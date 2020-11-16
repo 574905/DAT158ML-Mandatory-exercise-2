@@ -12,10 +12,12 @@ class DataForm(FlaskForm):
     are set to default values in `predict.py`).
     """
 
-    budget = IntegerField('Budget: ', validators=[NumberRange(min=0, max=500)])
+    budget = IntegerField('Budget: ', validators=[NumberRange(min=0, max=50000000)])
 
     genres = StringField('Genre: ', validators=[DataRequired()])
 
     release_year = IntegerField('Release year: ', validators=[NumberRange(min=1850, max=2020)])
+
+    cast = StringField('Cast: ', validators=[DataRequired()])
 
     submit = SubmitField('Submit')

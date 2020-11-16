@@ -8,6 +8,7 @@ import joblib
 #######
 
 model = joblib.load('models/tmdbboxoffice.joblib')
+pipeline = joblib.load('models/pipeline.joblib')
 
 
 def preprocess(data):
@@ -38,17 +39,17 @@ def preprocess(data):
 
     feature_values = {
         'belongs_to_collection': 0,
-        'budget': 0,
-        'genres': "Drama",
-        'original_language': "English",
-        'popularity': 0,
-        'production_companies': "None",
-        'production_countries': "None",
-        'release_year': 0,
-        'runtime': 0,
-        'spoken_languages': "None",
-        'Keywords': "None",
-        'cast': "None"
+        'budget': 8000000,
+        'genres': 'Drama',
+        'original_language': 'En',
+        'popularity': 7.3748615,
+        'production_companies': 'Universal Pictures',
+        'production_countries': "United States of America",
+        'release_year': 2004,
+        'runtime': 104,
+        'spoken_languages': 'English',
+        'Keywords': None,
+        'cast': None
        
     }
 
@@ -78,20 +79,15 @@ def predict(data):
        'Keywords', 'cast']
 
     data = np.array([data[feature] for feature in column_order], dtype=object)
+    data = pd.DataFrame(data.reshape(1, -1), columns = column_order)
 
-
-    # NB: In this case we didn't do any preprocessing of the data before 
-    # training our random forest model (see the notebool `nbs/1.0-asl-train_model.ipynb`). 
-    # If you plan to feed the training data through a preprocessing pipeline in your 
-    # own work, make sure you do the same to the data entered by the user before 
-    # predicting with the trained model. This can be achieved by saving an entire 
-    # sckikit-learn pipeline, for example using joblib as in the notebook.
     
-    pred = model.predict(data.reshape(1,-1))
+    data = pipeline.transform(data)
+    pred = model.predict(data)
 
-    uncertainty = model.predict_proba(data.reshape(1,-1))
 
-    return pred, uncertainty
+   
+    return pred
 
 
 def postprocess(prediction):
@@ -100,7 +96,7 @@ def postprocess(prediction):
     additional information etc. 
     """
 
-    pred, uncertainty = prediction
+    pred = prediction
 
     # Validate. As an example, if the output is an int, check that it is positive.
     try: 
@@ -110,10 +106,10 @@ def postprocess(prediction):
 
     # Make strings
     pred = str(pred[0])
-    uncertainty = str(uncertainty[0])
+   
 
 
     # Return
-    return_dict = {'pred': pred, 'uncertainty': uncertainty}
+    return_dict = {'pred': pred}
 
     return return_dict
