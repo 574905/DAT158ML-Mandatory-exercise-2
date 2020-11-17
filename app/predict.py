@@ -7,8 +7,8 @@ import joblib
 # `../nbs/1.0-asl-train_model.ipynb`
 #######
 
-model = joblib.load('models/tmdbboxoffice.joblib')
-pipeline = joblib.load('models/pipeline.joblib')
+model = joblib.load('models/mlmodel.joblib')
+pipeline = joblib.load('models/full_pipeline.joblib')
 
 
 def preprocess(data):
